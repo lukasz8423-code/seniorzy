@@ -13,46 +13,42 @@
             padding: 20px 15px;
             text-align: center;
         }
-        h1 { color: #1a252f; font-size: 28px; margin-bottom: 20px; }
-        .card {
-            background: #ffffff;
+        h1 { color: #1a252f; font-size: 28px; margin-bottom: 25px; }
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
             max-width: 450px;
-            margin: 0 auto 20px auto;
-            padding: 20px;
-            border-radius: 18px;
-            box-shadow: 0 5px 12px rgba(0,0,0,0.1);
-            border: 2px solid #e2e8f0;
+            margin: 0 auto;
         }
-        .card h2 { font-size: 20px; color: #007bff; margin-top: 0; }
-        iframe {
-            width: 100%;
-            height: 120px;
-            border: none;
-            border-radius: 12px;
-        }
-        .btn-speech {
-            border: none;
+        .btn {
+            display: block;
+            text-decoration: none;
             border-radius: 18px;
-            padding: 18px 15px;
-            font-size: 20px;
+            padding: 22px 15px;
+            font-size: 22px;
             font-weight: bold;
             color: white;
-            background-color: #6f42c1;
-            cursor: pointer;
             box-shadow: 0 5px 12px rgba(0,0,0,0.15);
             width: 100%;
-            max-width: 450px;
-            margin-top: 10px;
+        }
+        .btn-rmf { background-color: #007bff; }
+        .btn-pogoda { background-color: #17a2b8; }
+        .btn-speech { 
+            background-color: #6f42c1; 
+            border: none; 
+            cursor: pointer; 
+            font-family: Arial, sans-serif;
         }
         .info-box {
-            margin: 15px auto 0 auto;
+            margin: 25px auto 0 auto;
             max-width: 450px;
-            padding: 15px;
-            background: #e6fffa;
-            border-radius: 12px;
-            font-size: 16px;
-            color: #234e52;
-            border: 1px solid #b2f5ea;
+            padding: 18px;
+            background: #ffffff;
+            border-radius: 14px;
+            font-size: 18px;
+            color: #333;
+            border: 2px solid #e2e8f0;
         }
     </style>
 </head>
@@ -60,22 +56,19 @@
 
     <h1>☀️ Kącik dla Mamy</h1>
 
-    <!-- Radio w ramce - zero błędów i blokad -->
-    <div class="card">
-        <h2>📻 Stare Przeboje (Radio)</h2>
-        <iframe src="https://rcs.rmfon.pl/pl/player/embed?id=3" title="RMF FM"></iframe>
-    </div>
+    <div class="grid">
+        <!-- Odnośnik otwierający gotowy odtwarzacz RMF -->
+        <a class="btn btn-rmf" href="https://www.rmfon.pl/play,5" target="_blank">📻 Włącz RMF FM</a>
 
-    <div class="card">
-        <h2>🌧️ Szum Deszczu (Relaks)</h2>
-        <iframe src="https://rcs.rmfon.pl/pl/player/embed?id=35" title="Radio z deszczem/relaks"></iframe>
-    </div>
+        <!-- Odnośnik otwierający Radio Pogoda -->
+        <a class="btn btn-pogoda" href="https://radiopogoda.pl/sluchaj" target="_blank">🎶 Włącz Radio Pogoda</a>
 
-    <!-- Dodatkowy przycisk z lektorem -->
-    <button class="btn-speech" onclick="speakMessage()">🔊 Słowo na Dziś</button>
+        <!-- Lektor czytający powitanie na stronie -->
+        <button class="btn btn-speech btn" onclick="speakMessage()">🔊 Słowo na Dziś</button>
+    </div>
 
     <div class="info-box" id="status">
-        Wszystko gotowe! Klikaj śmiało w odtwarzacze powyżej.
+        Kliknij w wybrane radio, a otworzy się grająca muzyka!
     </div>
 
     <script>
