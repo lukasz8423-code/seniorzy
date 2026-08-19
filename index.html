@@ -31,6 +31,7 @@
             color: white;
             box-shadow: 0 5px 12px rgba(0,0,0,0.15);
             width: 100%;
+            text-align: center;
         }
         .btn-rmf { background-color: #007bff; }
         .btn-pogoda { background-color: #17a2b8; }
@@ -57,18 +58,18 @@
     <h1>☀️ Kącik dla Mamy</h1>
 
     <div class="grid">
-        <!-- Odnośnik otwierający gotowy odtwarzacz RMF -->
+        <!-- Otwiera oficjalny stream RMF FM w nowej karcie -->
         <a class="btn btn-rmf" href="https://www.rmfon.pl/play,5" target="_blank">📻 Włącz RMF FM</a>
 
-        <!-- Odnośnik otwierający Radio Pogoda -->
+        <!-- Otwiera Radio Pogoda w nowej karcie -->
         <a class="btn btn-pogoda" href="https://radiopogoda.pl/sluchaj" target="_blank">🎶 Włącz Radio Pogoda</a>
 
-        <!-- Lektor czytający powitanie na stronie -->
+        <!-- Przycisk z lektorem -->
         <button class="btn btn-speech btn" onclick="speakMessage()">🔊 Słowo na Dziś</button>
     </div>
 
     <div class="info-box" id="status">
-        Kliknij w wybrane radio, a otworzy się grająca muzyka!
+        Kliknij wybrany przycisk!
     </div>
 
     <script>
