@@ -39,7 +39,7 @@
         }
         .swiper-container::-webkit-scrollbar { display: none; }
 
-        /* Pojedyncza karta / ekrany kafelków */
+        /* Pojedynczy slajd */
         .slide {
             flex: 0 0 100%;
             width: 100%;
@@ -57,26 +57,34 @@
             background: #ffffff;
             width: 100%;
             max-width: 360px;
-            padding: 25px 20px;
+            padding: 20px;
             border-radius: 24px;
             box-shadow: 0 8px 20px rgba(0,0,0,0.08);
             text-align: center;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 15px;
-            transition: transform 0.2s;
+            gap: 12px;
         }
-        .card:active { transform: scale(0.98); }
-        .card-icon { font-size: 50px; }
+        .card-icon { font-size: 45px; }
         .card-title { font-size: 22px; font-weight: bold; color: #2c3e50; }
-        .card-desc { font-size: 15px; color: #7f8c8d; margin-bottom: 10px; }
+        .card-desc { font-size: 14px; color: #7f8c8d; }
+
+        /* Ramka odtwarzacza wewnątrz kafelka */
+        .player-frame {
+            width: 100%;
+            height: 80px;
+            border: none;
+            border-radius: 12px;
+            background: #f8f9fa;
+            margin-top: 5px;
+        }
 
         /* Przyciski Akcji */
         .btn-action {
             display: inline-block;
             width: 100%;
-            padding: 16px;
+            padding: 15px;
             border-radius: 16px;
             font-size: 18px;
             font-weight: bold;
@@ -86,8 +94,6 @@
             cursor: pointer;
             box-shadow: 0 4px 10px rgba(0,0,0,0.12);
         }
-        .bg-rmf { background-color: #007bff; }
-        .bg-pogoda { background-color: #17a2b8; }
         .bg-yt { background-color: #ff0000; }
         .bg-rain { background-color: #28a745; }
         .bg-speech { background-color: #6f42c1; }
@@ -115,12 +121,11 @@
             transform: scale(1.2);
         }
 
-        /* Pole z tekstem słowa na dziś */
         .info-text {
-            font-size: 16px;
+            font-size: 15px;
             color: #333;
             line-height: 1.4;
-            min-height: 50px;
+            min-height: 40px;
         }
     </style>
 </head>
@@ -130,7 +135,7 @@
         <h1>☀️ Kącik dla Kobiety</h1>
     </div>
 
-    <!-- Płynny przesuwany kontener (Swipe / Przeciąganie) -->
+    <!-- Przesuwany kontener -->
     <div class="swiper-container" id="swiper">
         
         <!-- Slajd 1: RMF FM -->
@@ -138,22 +143,23 @@
             <div class="card">
                 <div class="card-icon">📻</div>
                 <div class="card-title">Radio RMF FM</div>
-                <div class="card-desc">Najlepsza muzyka na cały dzień</div>
-                <a class="btn-action bg-rmf" href="https://www.rmfon.pl/play,5" target="_blank">Włącz Radio</a>
+                <div class="card-desc">Naciśnij Play na odtwarzaczu poniżej:</div>
+                <iframe class="player-frame" src="https://www.rmfon.pl/stacja-5,rmf-fm.html" allow="autoplay"></iframe>
             </div>
         </div>
 
-        <!-- Slajd 2: Radio Pogoda -->
+        <!-- Slajd 2: Radio Pogoda + Szum Deszczu Razem -->
         <div class="slide">
             <div class="card">
-                <div class="card-icon">🎶</div>
-                <div class="card-title">Radio Pogoda</div>
-                <div class="card-desc">Najpiękniejsze wspomnienia i przeboje</div>
-                <a class="btn-action bg-pogoda" href="https://www.radiopogoda.pl" target="_blank">Włącz Radio</a>
+                <div class="card-icon">🎶🌧️</div>
+                <div class="card-title">Radio Pogoda & Deszcz</div>
+                <div class="card-desc">Słuchaj radia albo włącz kojący deszcz:</div>
+                <iframe class="player-frame" src="https://audionow.pl/player/pogoda" allow="autoplay"></iframe>
+                <button class="btn-action bg-rain" onclick="toggleRain()">🌧️ Włącz / Wyłącz Szum Deszczu</button>
             </div>
         </div>
 
-        <!-- Slajd 3: Kazania -->
+        <!-- Slajd 3: Kazania ks. Pawlukiewicza -->
         <div class="slide">
             <div class="card">
                 <div class="card-icon">✝️</div>
@@ -163,17 +169,7 @@
             </div>
         </div>
 
-        <!-- Slajd 4: Szum Deszczu -->
-        <div class="slide">
-            <div class="card">
-                <div class="card-icon">🌧️</div>
-                <div class="card-title">Szum Deszczu</div>
-                <div class="card-desc">Kojące dźwięki do snu i relaksu</div>
-                <a class="btn-action bg-rain" href="https://www.youtube.com/results?search_query=szum+deszczu+do+snu" target="_blank">Otwórz Szum</a>
-            </div>
-        </div>
-
-        <!-- Slajd 5: Słowo na Dziś -->
+        <!-- Slajd 4: Słowo na Dziś -->
         <div class="slide">
             <div class="card">
                 <div class="card-icon">🔊</div>
@@ -185,18 +181,21 @@
 
     </div>
 
-    <!-- Pasek nawigacji na dole -->
+    <!-- Odtwarzacz deszczu w tle -->
+    <audio id="rainAudio" loop src="https://actions.google.com/sounds/v1/weather/rain_heavy_loud.ogg"></audio>
+
+    <!-- Dolny pasek nawigacji -->
     <div class="app-nav">
         <button class="nav-item active" onclick="scrollToSlide(0)">📻</button>
         <button class="nav-item" onclick="scrollToSlide(1)">🎶</button>
         <button class="nav-item" onclick="scrollToSlide(2)">✝️</button>
-        <button class="nav-item" onclick="scrollToSlide(3)">🌧️</button>
-        <button class="nav-item" onclick="scrollToSlide(4)">🔊</button>
+        <button class="nav-item" onclick="scrollToSlide(3)">🔊</button>
     </div>
 
     <script>
         const swiper = document.getElementById('swiper');
         const navItems = document.querySelectorAll('.nav-item');
+        const rainAudio = document.getElementById('rainAudio');
         const quotes = [
             "Dzień dobry! Pamiętaj, że każdy nowy dzień to nowa szansa na uśmiech i spokój w sercu.",
             "Witaj! Niech dzisiejszy dzień przyniesie Ci mnóstwo radości, dobrej energii i odpoczynku.",
@@ -207,13 +206,11 @@
             "Dzień dobry! Odrzuć wszystkie troski na bok i ciesz się dzisiejszym pięknym dniem."
         ];
 
-        // Przełączanie kafelków kliknięciem w dolny pasek
         function scrollToSlide(index) {
             const width = swiper.clientWidth;
             swiper.scrollTo({ left: width * index, behavior: 'smooth' });
         }
 
-        // Aktualizacja aktywnej ikony podczas przesuwania palcem (swipe)
         swiper.addEventListener('scroll', () => {
             const index = Math.round(swiper.scrollLeft / swiper.clientWidth);
             navItems.forEach((item, i) => {
@@ -225,8 +222,17 @@
             });
         });
 
-        // Lektor dla Słowa na Dziś
+        function toggleRain() {
+            window.speechSynthesis.cancel();
+            if (rainAudio.paused) {
+                rainAudio.play();
+            } else {
+                rainAudio.pause();
+            }
+        }
+
         function speakMessage() {
+            rainAudio.pause();
             window.speechSynthesis.cancel();
             const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
             document.getElementById('quoteText').innerText = randomQuote;
