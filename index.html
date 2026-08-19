@@ -13,7 +13,7 @@
             padding: 20px 15px;
             text-align: center;
         }
-        h1 { color: #1a252f; font-size: 28px; margin-bottom: 25px; }
+        h1 { color: #1a252f; font-size: 28px; margin-bottom: 20px; }
         .grid {
             display: grid;
             grid-template-columns: 1fr;
@@ -23,9 +23,8 @@
         }
         .btn {
             display: block;
-            text-decoration: none;
             border-radius: 18px;
-            padding: 22px 15px;
+            padding: 20px 15px;
             font-size: 20px;
             font-weight: bold;
             color: white;
@@ -35,6 +34,7 @@
             border: none;
             cursor: pointer;
             font-family: Arial, sans-serif;
+            text-decoration: none;
         }
         .btn-rmf { background-color: #007bff; }
         .btn-pogoda { background-color: #17a2b8; }
@@ -42,7 +42,7 @@
         .btn-rain { background-color: #28a745; }
         .btn-speech { background-color: #6f42c1; }
         .info-box {
-            margin: 25px auto 0 auto;
+            margin: 20px auto 0 auto;
             max-width: 450px;
             padding: 18px;
             background: #ffffff;
@@ -50,8 +50,8 @@
             font-size: 18px;
             color: #333;
             border: 2px solid #e2e8f0;
+            line-height: 1.4;
         }
-        audio { display: none; }
     </style>
 </head>
 <body>
@@ -59,72 +59,49 @@
     <h1>☀️ Kącik dla Kobiety</h1>
 
     <div class="grid">
-        <!-- RMF FM grany bezpośrednio na stronie -->
-        <button class="btn btn-rmf" onclick="playAudio('https://stream.rmf.fm/rmf_fm', 'RMF FM')">📻 Włącz / Wyłącz RMF FM</button>
+        <!-- RMF FM -->
+        <a class="btn btn-rmf" href="https://www.rmfon.pl/play,5" target="_blank">📻 Otwórz RMF FM</a>
 
-        <!-- Radio Pogoda grane bezpośrednio na stronie -->
-        <button class="btn btn-pogoda" onclick="playAudio('https://stream.pogoda.audionow.pl/pogoda.mp3', 'Radio Pogoda')">🎶 Włącz / Wyłącz Radio Pogoda</button>
+        <!-- Radio Pogoda -->
+        <a class="btn btn-pogoda" href="https://www.radiopogoda.pl" target="_blank">🎶 Otwórz Radio Pogoda</a>
 
-        <!-- Szum Deszczu bezpośrednio na stronie -->
-        <button class="btn btn-rain" onclick="playAudio('https://actions.google.com/sounds/v1/weather/rain_heavy_loud.ogg', 'Szum Deszczu')">🌧️ Włącz / Wyłącz Szum Deszczu</button>
+        <!-- Kazania ks. Pawlukiewicza -->
+        <a class="btn btn-yt" href="https://www.youtube.com/results?search_query=ks+piotr+pawlukiewicz+kazania" target="_blank">✝️ Kazania ks. Pawlukiewicza (YT)</a>
 
-        <!-- Kazania ks. Pawlukiewicza na YouTube -->
-        <a class="btn btn-yt" href="https://www.youtube.com/results?search_query=ks+piotr+pawlukiewicz+kazania">✝️ Kazania ks. Pawlukiewicza (YT)</a>
+        <!-- Szum Deszczu -->
+        <a class="btn btn-rain" href="https://www.youtube.com/results?search_query=szum+deszczu+do+snu" target="_blank">🌧️ Szum Deszczu do Snu (YT)</a>
 
         <!-- Przycisk z lektorem -->
         <button class="btn btn-speech" onclick="speakMessage()">🔊 Słowo na Dziś</button>
     </div>
 
     <div class="info-box" id="status">
-        Kliknij wybrany przycisk, aby włączyć audio!
+        Kliknij „Słowo na Dziś” albo wybraną stację!
     </div>
 
-    <!-- Jeden wspólny odtwarzacz dźwięku na stronie -->
-    <audio id="mainPlayer"></audio>
-
     <script>
-        const player = document.getElementById('mainPlayer');
-        const statusBox = document.getElementById('status');
-        let activeUrl = '';
-
-        function playAudio(url, name) {
-            window.speechSynthesis.cancel();
-
-            // Jeśli to samo gra - wyłącz
-            if (activeUrl === url && !player.paused) {
-                player.pause();
-                player.src = '';
-                activeUrl = '';
-                statusBox.innerHTML = "⏹️ Wyłączono: " + name;
-                return;
-            }
-
-            // Włącz nową ścieżkę
-            statusBox.innerHTML = "⏳ Łączenie z " + name + "...";
-            activeUrl = url;
-            player.src = url;
-
-            player.play().then(() => {
-                statusBox.innerHTML = "▶️ Gra: " + name + " (kliknij ponownie, by wyłączyć)";
-            }).catch(err => {
-                console.error(err);
-                statusBox.innerHTML = "⚠️ Kliknij przycisk jeszcze raz, aby uruchomić!";
-            });
-        }
+        const quotes = [
+            "Dzień dobry! Pamiętaj, że każdy nowy dzień to nowa szansa na uśmiech i spokój w sercu.",
+            "Witaj! Niech dzisiejszy dzień przyniesie Ci mnóstwo radości, dobrej energii i odpoczynku.",
+            "Dzień dobry! Zrób sobie pyszną herbatkę lub kawę i spędź ten dzień bez pośpiechu.",
+            "Wspaniałego dnia! Bądź dla siebie dobra i pamiętaj, że małe przyjemności tworzą piękny dzień.",
+            "Dzień dobry! Życzę Ci dzisiaj dużo słońca w sercu, miłych chwil i wspaniałej muzyki.",
+            "Witaj serdecznie! Pamiętaj, że jesteś wyjątkowa. Życzę Ci spokojnego i udanego dnia.",
+            "Dzień dobry! Odrzuć wszystkie troski na bok i ciesz się dzisiejszym pięknym dniem."
+        ];
 
         function speakMessage() {
-            player.pause();
-            player.src = '';
-            activeUrl = '';
             window.speechSynthesis.cancel();
-
-            const text = "Dzień dobry! Życzę Ci wspaniałego, spokojnego dnia i mnóstwa uśmiechu!";
-            const utterance = new SpeechSynthesisUtterance(text);
+            
+            // Losowe słowo na dziś na każdy dzień / kliknięcie
+            const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+            
+            const utterance = new SpeechSynthesisUtterance(randomQuote);
             utterance.lang = 'pl-PL';
             utterance.rate = 0.9;
 
             window.speechSynthesis.speak(utterance);
-            statusBox.innerHTML = "🔊 Lektor czyta wiadomość...";
+            document.getElementById('status').innerHTML = "🔊 <b>Słowo na dziś:</b><br>\"" + randomQuote + "\"";
         }
     </script>
 
