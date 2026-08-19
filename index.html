@@ -18,7 +18,6 @@
             user-select: none;
         }
 
-        /* Górny pasek aplikacji */
         .app-header {
             background: #ffffff;
             padding: 15px;
@@ -28,7 +27,6 @@
         }
         .app-header h1 { margin: 0; font-size: 22px; color: #1a252f; }
 
-        /* Pojemnik na karuzelę kafelków */
         .swiper-container {
             flex: 1;
             display: flex;
@@ -39,7 +37,6 @@
         }
         .swiper-container::-webkit-scrollbar { display: none; }
 
-        /* Pojedynczy slajd */
         .slide {
             flex: 0 0 100%;
             width: 100%;
@@ -52,53 +49,45 @@
             box-sizing: border-box;
         }
 
-        /* Kafelki mobilne */
         .card {
             background: #ffffff;
             width: 100%;
             max-width: 360px;
-            padding: 20px;
+            padding: 24px;
             border-radius: 24px;
             box-shadow: 0 8px 20px rgba(0,0,0,0.08);
             text-align: center;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 12px;
+            gap: 15px;
         }
-        .card-icon { font-size: 45px; }
+        .card-icon { font-size: 50px; }
         .card-title { font-size: 22px; font-weight: bold; color: #2c3e50; }
         .card-desc { font-size: 14px; color: #7f8c8d; }
 
-        /* Ramka odtwarzacza wewnątrz kafelka */
-        .player-frame {
-            width: 100%;
-            height: 80px;
-            border: none;
-            border-radius: 12px;
-            background: #f8f9fa;
-            margin-top: 5px;
-        }
-
-        /* Przyciski Akcji */
         .btn-action {
             display: inline-block;
             width: 100%;
-            padding: 15px;
-            border-radius: 16px;
-            font-size: 18px;
+            padding: 18px;
+            border-radius: 18px;
+            font-size: 20px;
             font-weight: bold;
             color: white;
             text-decoration: none;
             border: none;
             cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            transition: transform 0.1s;
         }
+        .btn-action:active { transform: scale(0.96); }
+
+        .bg-rmf { background-color: #ffcc00; color: #000; }
+        .bg-pogoda { background-color: #e67e22; }
+        .bg-weather { background-color: #27ae60; }
         .bg-yt { background-color: #ff0000; }
-        .bg-rain { background-color: #28a745; }
         .bg-speech { background-color: #6f42c1; }
 
-        /* Dolna nawigacja mobilna */
         .app-nav {
             background: #ffffff;
             display: flex;
@@ -110,7 +99,7 @@
         .nav-item {
             background: none;
             border: none;
-            font-size: 20px;
+            font-size: 22px;
             opacity: 0.4;
             cursor: pointer;
             padding: 8px 12px;
@@ -135,7 +124,6 @@
         <h1>☀️ Kącik dla Kobiety</h1>
     </div>
 
-    <!-- Przesuwany kontener -->
     <div class="swiper-container" id="swiper">
         
         <!-- Slajd 1: RMF FM -->
@@ -143,23 +131,32 @@
             <div class="card">
                 <div class="card-icon">📻</div>
                 <div class="card-title">Radio RMF FM</div>
-                <div class="card-desc">Naciśnij Play na odtwarzaczu poniżej:</div>
-                <iframe class="player-frame" src="https://www.rmfon.pl/stacja-5,rmf-fm.html" allow="autoplay"></iframe>
+                <div class="card-desc">Naciśnij wielki przycisk poniżej:</div>
+                <button class="btn-action bg-rmf" onclick="playAudio('https://rs102-krk.rmftest.pl/RMF_FM')">▶️ GRAJ RMF FM</button>
             </div>
         </div>
 
-        <!-- Slajd 2: Radio Pogoda + Szum Deszczu Razem -->
+        <!-- Slajd 2: Radio Pogoda -->
         <div class="slide">
             <div class="card">
-                <div class="card-icon">🎶🌧️</div>
-                <div class="card-title">Radio Pogoda & Deszcz</div>
-                <div class="card-desc">Słuchaj radia albo włącz kojący deszcz:</div>
-                <iframe class="player-frame" src="https://audionow.pl/player/pogoda" allow="autoplay"></iframe>
-                <button class="btn-action bg-rain" onclick="toggleRain()">🌧️ Włącz / Wyłącz Szum Deszczu</button>
+                <div class="card-icon">🎶</div>
+                <div class="card-title">Radio Pogoda</div>
+                <div class="card-desc">Naciśnij wielki przycisk poniżej:</div>
+                <button class="btn-action bg-pogoda" onclick="playAudio('https://stream.pogoda.agora.pl/pogoda_a.mp3')">▶️ GRAJ POGODĘ</button>
             </div>
         </div>
 
-        <!-- Slajd 3: Kazania ks. Pawlukiewicza -->
+        <!-- Slajd 3: Dźwięk dopasowany do Pogody -->
+        <div class="slide">
+            <div class="card">
+                <div class="card-icon" id="weatherIcon">🌤️</div>
+                <div class="card-title">Dźwięk Pogody</div>
+                <div class="card-desc" id="weatherStatus">Sprawdzam aktualną pogodę...</div>
+                <button class="btn-action bg-weather" onclick="toggleWeatherSound()">🌧️ Włącz Dźwięk Pogody</button>
+            </div>
+        </div>
+
+        <!-- Slajd 4: Kazania -->
         <div class="slide">
             <div class="card">
                 <div class="card-icon">✝️</div>
@@ -169,7 +166,7 @@
             </div>
         </div>
 
-        <!-- Slajd 4: Słowo na Dziś -->
+        <!-- Slajd 5: Słowo na Dziś -->
         <div class="slide">
             <div class="card">
                 <div class="card-icon">🔊</div>
@@ -181,21 +178,27 @@
 
     </div>
 
-    <!-- Odtwarzacz deszczu w tle -->
-    <audio id="rainAudio" loop src="https://actions.google.com/sounds/v1/weather/rain_heavy_loud.ogg"></audio>
+    <!-- Odtwarzacz tła -->
+    <audio id="mainPlayer"></audio>
+    <audio id="weatherPlayer" loop></audio>
 
     <!-- Dolny pasek nawigacji -->
     <div class="app-nav">
         <button class="nav-item active" onclick="scrollToSlide(0)">📻</button>
         <button class="nav-item" onclick="scrollToSlide(1)">🎶</button>
-        <button class="nav-item" onclick="scrollToSlide(2)">✝️</button>
-        <button class="nav-item" onclick="scrollToSlide(3)">🔊</button>
+        <button class="nav-item" onclick="scrollToSlide(2)">🌧️</button>
+        <button class="nav-item" onclick="scrollToSlide(3)">✝️</button>
+        <button class="nav-item" onclick="scrollToSlide(4)">🔊</button>
     </div>
 
     <script>
         const swiper = document.getElementById('swiper');
         const navItems = document.querySelectorAll('.nav-item');
-        const rainAudio = document.getElementById('rainAudio');
+        const mainPlayer = document.getElementById('mainPlayer');
+        const weatherPlayer = document.getElementById('weatherPlayer');
+
+        let isRaining = false;
+
         const quotes = [
             "Dzień dobry! Pamiętaj, że każdy nowy dzień to nowa szansa na uśmiech i spokój w sercu.",
             "Witaj! Niech dzisiejszy dzień przyniesie Ci mnóstwo radości, dobrej energii i odpoczynku.",
@@ -222,18 +225,60 @@
             });
         });
 
-        function toggleRain() {
+        // Obsługa Radia
+        function playAudio(url) {
+            weatherPlayer.pause();
             window.speechSynthesis.cancel();
-            if (rainAudio.paused) {
-                rainAudio.play();
+
+            if (mainPlayer.src === url && !mainPlayer.paused) {
+                mainPlayer.pause();
             } else {
-                rainAudio.pause();
+                mainPlayer.src = url;
+                mainPlayer.play().catch(e => alert("Naciśnij ponownie, aby uruchomić dźwięk."));
+            }
+        }
+
+        // Automatyczne sprawdzanie pogody w Lipnie / okolicach
+        async function checkWeather() {
+            try {
+                const res = await fetch("https://api.open-meteo.com/v1/forecast?latitude=52.84&longitude=19.17&current_weather=true");
+                const data = await res.json();
+                const code = data.current_weather.weathercode;
+
+                // Kody pogodowe Open-Meteo wskazujące na deszcz / mżawkę / burzę
+                if ([51, 53, 55, 61, 63, 65, 80, 81, 82, 95].includes(code)) {
+                    isRaining = true;
+                    document.getElementById('weatherIcon').innerText = "🌧️";
+                    document.getElementById('weatherStatus').innerText = "Na zewnątrz pada deszcz! Włącz kojący szum:";
+                    weatherPlayer.src = "https://actions.google.com/sounds/v1/weather/rain_heavy_loud.ogg";
+                } else {
+                    isRaining = false;
+                    document.getElementById('weatherIcon').innerText = "🌤️";
+                    document.getElementById('weatherStatus').innerText = "Na zewnątrz jest bez deszczu! Włącz szum wiatru i ptaków:";
+                    weatherPlayer.src = "https://actions.google.com/sounds/v1/weather/wind_synthetic.ogg";
+                }
+            } catch (e) {
+                document.getElementById('weatherStatus').innerText = "Włącz relaksujący dźwięk natury:";
+                weatherPlayer.src = "https://actions.google.com/sounds/v1/weather/rain_heavy_loud.ogg";
+            }
+        }
+
+        function toggleWeatherSound() {
+            mainPlayer.pause();
+            window.speechSynthesis.cancel();
+
+            if (weatherPlayer.paused) {
+                weatherPlayer.play();
+            } else {
+                weatherPlayer.pause();
             }
         }
 
         function speakMessage() {
-            rainAudio.pause();
+            mainPlayer.pause();
+            weatherPlayer.pause();
             window.speechSynthesis.cancel();
+
             const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
             document.getElementById('quoteText').innerText = randomQuote;
 
@@ -242,6 +287,8 @@
             utterance.rate = 0.9;
             window.speechSynthesis.speak(utterance);
         }
+
+        checkWeather();
     </script>
 
 </body>
