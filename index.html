@@ -2,84 +2,201 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Kącik dla Kobiety</title>
     <style>
-        * { box-sizing: border-box; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f4f8;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f4f6f9;
             margin: 0;
-            padding: 20px 15px;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+            user-select: none;
+        }
+
+        /* Górny pasek aplikacji */
+        .app-header {
+            background: #ffffff;
+            padding: 15px;
             text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            z-index: 10;
         }
-        h1 { color: #1a252f; font-size: 28px; margin-bottom: 20px; }
-        .grid {
-            display: grid;
-            grid-template-columns: 1fr;
+        .app-header h1 { margin: 0; font-size: 22px; color: #1a252f; }
+
+        /* Pojemnik na karuzelę kafelków */
+        .swiper-container {
+            flex: 1;
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+        }
+        .swiper-container::-webkit-scrollbar { display: none; }
+
+        /* Pojedyncza karta / ekrany kafelków */
+        .slide {
+            flex: 0 0 100%;
+            width: 100%;
+            scroll-snap-align: start;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-sizing: border-box;
+        }
+
+        /* Kafelki mobilne */
+        .card {
+            background: #ffffff;
+            width: 100%;
+            max-width: 360px;
+            padding: 25px 20px;
+            border-radius: 24px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             gap: 15px;
-            max-width: 450px;
-            margin: 0 auto;
+            transition: transform 0.2s;
         }
-        .btn {
-            display: block;
-            border-radius: 18px;
-            padding: 20px 15px;
-            font-size: 20px;
+        .card:active { transform: scale(0.98); }
+        .card-icon { font-size: 50px; }
+        .card-title { font-size: 22px; font-weight: bold; color: #2c3e50; }
+        .card-desc { font-size: 15px; color: #7f8c8d; margin-bottom: 10px; }
+
+        /* Przyciski Akcji */
+        .btn-action {
+            display: inline-block;
+            width: 100%;
+            padding: 16px;
+            border-radius: 16px;
+            font-size: 18px;
             font-weight: bold;
             color: white;
-            box-shadow: 0 5px 12px rgba(0,0,0,0.15);
-            width: 100%;
-            text-align: center;
+            text-decoration: none;
             border: none;
             cursor: pointer;
-            font-family: Arial, sans-serif;
-            text-decoration: none;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.12);
         }
-        .btn-rmf { background-color: #007bff; }
-        .btn-pogoda { background-color: #17a2b8; }
-        .btn-yt { background-color: #ff0000; }
-        .btn-rain { background-color: #28a745; }
-        .btn-speech { background-color: #6f42c1; }
-        .info-box {
-            margin: 20px auto 0 auto;
-            max-width: 450px;
-            padding: 18px;
+        .bg-rmf { background-color: #007bff; }
+        .bg-pogoda { background-color: #17a2b8; }
+        .bg-yt { background-color: #ff0000; }
+        .bg-rain { background-color: #28a745; }
+        .bg-speech { background-color: #6f42c1; }
+
+        /* Dolna nawigacja mobilna */
+        .app-nav {
             background: #ffffff;
-            border-radius: 14px;
-            font-size: 18px;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            border-top: 1px solid #e2e8f0;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.04);
+        }
+        .nav-item {
+            background: none;
+            border: none;
+            font-size: 20px;
+            opacity: 0.4;
+            cursor: pointer;
+            padding: 8px 12px;
+            transition: opacity 0.2s, transform 0.2s;
+        }
+        .nav-item.active {
+            opacity: 1;
+            transform: scale(1.2);
+        }
+
+        /* Pole z tekstem słowa na dziś */
+        .info-text {
+            font-size: 16px;
             color: #333;
-            border: 2px solid #e2e8f0;
             line-height: 1.4;
+            min-height: 50px;
         }
     </style>
 </head>
 <body>
 
-    <h1>☀️ Kącik dla Kobiety</h1>
-
-    <div class="grid">
-        <!-- RMF FM -->
-        <a class="btn btn-rmf" href="https://www.rmfon.pl/play,5" target="_blank">📻 Otwórz RMF FM</a>
-
-        <!-- Radio Pogoda -->
-        <a class="btn btn-pogoda" href="https://www.radiopogoda.pl" target="_blank">🎶 Otwórz Radio Pogoda</a>
-
-        <!-- Kazania ks. Pawlukiewicza -->
-        <a class="btn btn-yt" href="https://www.youtube.com/results?search_query=ks+piotr+pawlukiewicz+kazania" target="_blank">✝️ Kazania ks. Pawlukiewicza (YT)</a>
-
-        <!-- Szum Deszczu -->
-        <a class="btn btn-rain" href="https://www.youtube.com/results?search_query=szum+deszczu+do+snu" target="_blank">🌧️ Szum Deszczu do Snu (YT)</a>
-
-        <!-- Przycisk z lektorem -->
-        <button class="btn btn-speech" onclick="speakMessage()">🔊 Słowo na Dziś</button>
+    <div class="app-header">
+        <h1>☀️ Kącik dla Kobiety</h1>
     </div>
 
-    <div class="info-box" id="status">
-        Kliknij „Słowo na Dziś” albo wybraną stację!
+    <!-- Płynny przesuwany kontener (Swipe / Przeciąganie) -->
+    <div class="swiper-container" id="swiper">
+        
+        <!-- Slajd 1: RMF FM -->
+        <div class="slide">
+            <div class="card">
+                <div class="card-icon">📻</div>
+                <div class="card-title">Radio RMF FM</div>
+                <div class="card-desc">Najlepsza muzyka na cały dzień</div>
+                <a class="btn-action bg-rmf" href="https://www.rmfon.pl/play,5" target="_blank">Włącz Radio</a>
+            </div>
+        </div>
+
+        <!-- Slajd 2: Radio Pogoda -->
+        <div class="slide">
+            <div class="card">
+                <div class="card-icon">🎶</div>
+                <div class="card-title">Radio Pogoda</div>
+                <div class="card-desc">Najpiękniejsze wspomnienia i przeboje</div>
+                <a class="btn-action bg-pogoda" href="https://www.radiopogoda.pl" target="_blank">Włącz Radio</a>
+            </div>
+        </div>
+
+        <!-- Slajd 3: Kazania -->
+        <div class="slide">
+            <div class="card">
+                <div class="card-icon">✝️</div>
+                <div class="card-title">ks. Pawlukiewicz</div>
+                <div class="card-desc">Mądre słowa i duchowe wsparcie</div>
+                <a class="btn-action bg-yt" href="https://www.youtube.com/results?search_query=ks+piotr+pawlukiewicz+kazania" target="_blank">Słuchaj na YouTube</a>
+            </div>
+        </div>
+
+        <!-- Slajd 4: Szum Deszczu -->
+        <div class="slide">
+            <div class="card">
+                <div class="card-icon">🌧️</div>
+                <div class="card-title">Szum Deszczu</div>
+                <div class="card-desc">Kojące dźwięki do snu i relaksu</div>
+                <a class="btn-action bg-rain" href="https://www.youtube.com/results?search_query=szum+deszczu+do+snu" target="_blank">Otwórz Szum</a>
+            </div>
+        </div>
+
+        <!-- Slajd 5: Słowo na Dziś -->
+        <div class="slide">
+            <div class="card">
+                <div class="card-icon">🔊</div>
+                <div class="card-title">Słowo na Dziś</div>
+                <div class="card-desc info-text" id="quoteText">Kliknij przycisk poniżej, aby usłyszeć wiadomość!</div>
+                <button class="btn-action bg-speech" onclick="speakMessage()">Losuj i Przeczytaj</button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Pasek nawigacji na dole -->
+    <div class="app-nav">
+        <button class="nav-item active" onclick="scrollToSlide(0)">📻</button>
+        <button class="nav-item" onclick="scrollToSlide(1)">🎶</button>
+        <button class="nav-item" onclick="scrollToSlide(2)">✝️</button>
+        <button class="nav-item" onclick="scrollToSlide(3)">🌧️</button>
+        <button class="nav-item" onclick="scrollToSlide(4)">🔊</button>
     </div>
 
     <script>
+        const swiper = document.getElementById('swiper');
+        const navItems = document.querySelectorAll('.nav-item');
         const quotes = [
             "Dzień dobry! Pamiętaj, że każdy nowy dzień to nowa szansa na uśmiech i spokój w sercu.",
             "Witaj! Niech dzisiejszy dzień przyniesie Ci mnóstwo radości, dobrej energii i odpoczynku.",
@@ -90,18 +207,34 @@
             "Dzień dobry! Odrzuć wszystkie troski na bok i ciesz się dzisiejszym pięknym dniem."
         ];
 
+        // Przełączanie kafelków kliknięciem w dolny pasek
+        function scrollToSlide(index) {
+            const width = swiper.clientWidth;
+            swiper.scrollTo({ left: width * index, behavior: 'smooth' });
+        }
+
+        // Aktualizacja aktywnej ikony podczas przesuwania palcem (swipe)
+        swiper.addEventListener('scroll', () => {
+            const index = Math.round(swiper.scrollLeft / swiper.clientWidth);
+            navItems.forEach((item, i) => {
+                if(i === index) {
+                    item.classList.add('active');
+                } else {
+                    item.classList.remove('active');
+                }
+            });
+        });
+
+        // Lektor dla Słowa na Dziś
         function speakMessage() {
             window.speechSynthesis.cancel();
-            
-            // Losowe słowo na dziś na każdy dzień / kliknięcie
             const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
-            
+            document.getElementById('quoteText').innerText = randomQuote;
+
             const utterance = new SpeechSynthesisUtterance(randomQuote);
             utterance.lang = 'pl-PL';
             utterance.rate = 0.9;
-
             window.speechSynthesis.speak(utterance);
-            document.getElementById('status').innerHTML = "🔊 <b>Słowo na dziś:</b><br>\"" + randomQuote + "\"";
         }
     </script>
 
