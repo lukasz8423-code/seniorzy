@@ -64,13 +64,13 @@
         <!-- RMF FM -->
         <a class="btn btn-rmf" href="https://www.rmfon.pl/play,5">📻 Włącz RMF FM</a>
 
-        <!-- Radio Pogoda -->
-        <a class="btn btn-pogoda" href="https://www.onet.pl/muzyka/radiopogoda">🎶 Włącz Radio Pogoda</a>
+        <!-- Radio Pogoda (Pewny link bezpośrednio do grającego serwisu) -->
+        <a class="btn btn-pogoda" href="https://moje.radiopogoda.pl/radio">🎶 Włącz Radio Pogoda</a>
 
         <!-- Kazania ks. Pawlukiewicza na YouTube -->
         <a class="btn btn-yt" href="https://www.youtube.com/results?search_query=ks+piotr+pawlukiewicz+kazania">✝️ Kazania ks. Pawlukiewicza (YT)</a>
 
-        <!-- Szum Deszczu bezpośrednio na stronie (bez YouTube) -->
+        <!-- Szum Deszczu bezpośrednio na stronie (bez otwierania stron) -->
         <button class="btn btn-rain" onclick="toggleRain()">🌧️ Szum Deszczu do Snu</button>
 
         <!-- Przycisk z lektorem -->
@@ -81,7 +81,7 @@
         Kliknij wybrany przycisk!
     </div>
 
-    <!-- Odtwarzacz deszczu w tle -->
+    <!-- Odtwarzacz deszczu bezpośrednio w tle -->
     <audio id="rainAudio" loop src="https://actions.google.com/sounds/v1/weather/rain_heavy_loud.ogg"></audio>
 
     <script>
@@ -92,7 +92,7 @@
             window.speechSynthesis.cancel();
             if (rainAudio.paused) {
                 rainAudio.play().then(() => {
-                    statusBox.innerHTML = "🌧️ Szum deszczu gra w tle... Kliknij ponownie, by wyłączyć.";
+                    statusBox.innerHTML = "🌧️ Szum deszczu gra... Kliknij ponownie, aby wyłączyć.";
                 }).catch(err => {
                     statusBox.innerHTML = "⚠️ Kliknij przycisk deszczu jeszcze raz!";
                 });
