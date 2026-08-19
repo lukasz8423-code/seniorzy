@@ -51,9 +51,7 @@
             color: #333;
             border: 2px solid #e2e8f0;
         }
-        audio {
-            display: none;
-        }
+        audio { display: none; }
     </style>
 </head>
 <body>
@@ -61,54 +59,70 @@
     <h1>☀️ Kącik dla Kobiety</h1>
 
     <div class="grid">
-        <!-- RMF FM -->
-        <a class="btn btn-rmf" href="https://www.rmfon.pl/play,5">📻 Włącz RMF FM</a>
+        <!-- RMF FM grany bezpośrednio na stronie -->
+        <button class="btn btn-rmf" onclick="playAudio('https://stream.rmf.fm/rmf_fm', 'RMF FM')">📻 Włącz / Wyłącz RMF FM</button>
 
-        <!-- Radio Pogoda (Pewny link bezpośrednio do grającego serwisu) -->
-        <a class="btn btn-pogoda" href="https://moje.radiopogoda.pl/radio">🎶 Włącz Radio Pogoda</a>
+        <!-- Radio Pogoda grane bezpośrednio na stronie -->
+        <button class="btn btn-pogoda" onclick="playAudio('https://stream.pogoda.audionow.pl/pogoda.mp3', 'Radio Pogoda')">🎶 Włącz / Wyłącz Radio Pogoda</button>
+
+        <!-- Szum Deszczu bezpośrednio na stronie -->
+        <button class="btn btn-rain" onclick="playAudio('https://actions.google.com/sounds/v1/weather/rain_heavy_loud.ogg', 'Szum Deszczu')">🌧️ Włącz / Wyłącz Szum Deszczu</button>
 
         <!-- Kazania ks. Pawlukiewicza na YouTube -->
         <a class="btn btn-yt" href="https://www.youtube.com/results?search_query=ks+piotr+pawlukiewicz+kazania">✝️ Kazania ks. Pawlukiewicza (YT)</a>
-
-        <!-- Szum Deszczu bezpośrednio na stronie (bez otwierania stron) -->
-        <button class="btn btn-rain" onclick="toggleRain()">🌧️ Szum Deszczu do Snu</button>
 
         <!-- Przycisk z lektorem -->
         <button class="btn btn-speech" onclick="speakMessage()">🔊 Słowo na Dziś</button>
     </div>
 
     <div class="info-box" id="status">
-        Kliknij wybrany przycisk!
+        Kliknij wybrany przycisk, aby włączyć audio!
     </div>
 
-    <!-- Odtwarzacz deszczu bezpośrednio w tle -->
-    <audio id="rainAudio" loop src="https://actions.google.com/sounds/v1/weather/rain_heavy_loud.ogg"></audio>
+    <!-- Jeden wspólny odtwarzacz dźwięku na stronie -->
+    <audio id="mainPlayer"></audio>
 
     <script>
-        const rainAudio = document.getElementById('rainAudio');
+        const player = document.getElementById('mainPlayer');
         const statusBox = document.getElementById('status');
+        let activeUrl = '';
 
-        function toggleRain() {
+        function playAudio(url, name) {
             window.speechSynthesis.cancel();
-            if (rainAudio.paused) {
-                rainAudio.play().then(() => {
-                    statusBox.innerHTML = "🌧️ Szum deszczu gra... Kliknij ponownie, aby wyłączyć.";
-                }).catch(err => {
-                    statusBox.innerHTML = "⚠️ Kliknij przycisk deszczu jeszcze raz!";
-                });
-            } else {
-                rainAudio.pause();
-                statusBox.innerHTML = "⏹️ Wyłączono szum deszczu.";
+
+            // Jeśli to samo gra - wyłącz
+            if (activeUrl === url && !player.paused) {
+                player.pause();
+                player.src = '';
+                activeUrl = '';
+                statusBox.innerHTML = "⏹️ Wyłączono: " + name;
+                return;
             }
+
+            // Włącz nową ścieżkę
+            statusBox.innerHTML = "⏳ Łączenie z " + name + "...";
+            activeUrl = url;
+            player.src = url;
+
+            player.play().then(() => {
+                statusBox.innerHTML = "▶️ Gra: " + name + " (kliknij ponownie, by wyłączyć)";
+            }).catch(err => {
+                console.error(err);
+                statusBox.innerHTML = "⚠️ Kliknij przycisk jeszcze raz, aby uruchomić!";
+            });
         }
 
         function speakMessage() {
-            rainAudio.pause();
+            player.pause();
+            player.src = '';
+            activeUrl = '';
             window.speechSynthesis.cancel();
+
             const text = "Dzień dobry! Życzę Ci wspaniałego, spokojnego dnia i mnóstwa uśmiechu!";
             const utterance = new SpeechSynthesisUtterance(text);
             utterance.lang = 'pl-PL';
             utterance.rate = 0.9;
+
             window.speechSynthesis.speak(utterance);
             statusBox.innerHTML = "🔊 Lektor czyta wiadomość...";
         }
