@@ -5,50 +5,49 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kącik dla Mamy</title>
     <style>
+        * { box-sizing: border-box; }
         body {
             font-family: Arial, sans-serif;
             background-color: #f0f4f8;
             margin: 0;
-            padding: 15px;
+            padding: 20px 15px;
             text-align: center;
         }
         h1 {
-            color: #333;
+            color: #1a252f;
             font-size: 28px;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
         .grid {
             display: grid;
             grid-template-columns: 1fr;
             gap: 15px;
-            max-width: 500px;
+            max-width: 450px;
             margin: 0 auto;
         }
         .btn {
             border: none;
-            border-radius: 15px;
-            padding: 25px 15px;
+            border-radius: 18px;
+            padding: 22px 15px;
             font-size: 22px;
             font-weight: bold;
             color: white;
             cursor: pointer;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-            transition: transform 0.1s;
-        }
-        .btn:active {
-            transform: scale(0.98);
+            box-shadow: 0 5px 12px rgba(0,0,0,0.15);
+            width: 100%;
         }
         .btn-radio { background-color: #007bff; }
         .btn-relax { background-color: #28a745; }
         .btn-speech { background-color: #6f42c1; }
         .info-box {
-            margin-top: 20px;
-            padding: 15px;
-            background: #fff;
-            border-radius: 10px;
+            margin: 25px auto 0 auto;
+            max-width: 450px;
+            padding: 18px;
+            background: #ffffff;
+            border-radius: 14px;
             font-size: 18px;
-            color: #444;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            color: #333;
+            border: 2px solid #e2e8f0;
         }
     </style>
 </head>
@@ -63,12 +62,11 @@
     </div>
 
     <div class="info-box" id="status">
-        Kliknij dowolny przycisk powyżej!
+        Kliknij przycisk powyżej!
     </div>
 
-    <!-- Odtwarzacze Audio -->
-    <audio id="radioPlayer" src="https://stream.rcs.revma.com/yp244p9388uvw"></audio>
-    <audio id="rainPlayer" loop src="https://www.soundjay.com/nature/rain-01.mp3"></audio>
+    <audio id="radioPlayer" src="https://stream.rmf.fm/rmf_fm"></audio>
+    <audio id="rainPlayer" loop src="https://actions.google.com/sounds/v1/weather/rain_heavy_loud.ogg"></audio>
 
     <script>
         const radio = document.getElementById('radioPlayer');
@@ -78,28 +76,34 @@
         function toggleRadio() {
             rain.pause();
             if (radio.paused) {
-                radio.play();
-                status.innerHTML = "▶️ Gra muzyka z dawnych lat...";
+                radio.play().then(() => {
+                    status.innerHTML = "▶️ Gra muzyka (RMF FM)";
+                }).catch(err => {
+                    status.innerHTML = "⚠️ Błąd włączenia radia. Sprawdź internet!";
+                });
             } else {
                 radio.pause();
-                status.innerHTML = "⏹️ Radio wyłączone.";
+                status.innerHTML = "⏹️ Radio wyłączone";
             }
         }
 
         function toggleRain() {
             radio.pause();
             if (rain.paused) {
-                rain.play();
-                status.innerHTML = "🌧️ Odtwarzam uspokajający szum deszczu...";
+                rain.play().then(() => {
+                    status.innerHTML = "🌧️ Gra szum deszczu...";
+                }).catch(err => {
+                    status.innerHTML = "⚠️ Błąd dźwięku deszczu";
+                });
             } else {
                 rain.pause();
-                status.innerHTML = "⏹️ Relaks wyłączony.";
+                status.innerHTML = "⏹️ Relaks wyłączony";
             }
         }
 
         function speakMessage() {
             window.speechSynthesis.cancel();
-            const text = "Dzień dobry! Życzę Ci spokojnego, pięknego dnia. Odpocznij sobie i posłuchaj dobrej muzyki!";
+            const text = "Dzień dobry! Życzę Ci spokojnego i pięknego dnia. Odpocznij sobie i posłuchaj dobrej muzyki!";
             const utterance = new SpeechSynthesisUtterance(text);
             utterance.lang = 'pl-PL';
             utterance.rate = 0.9;
