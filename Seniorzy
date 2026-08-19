@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kącik dla Mamy</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f4f8;
+            margin: 0;
+            padding: 15px;
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        .btn {
+            border: none;
+            border-radius: 15px;
+            padding: 25px 15px;
+            font-size: 22px;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            transition: transform 0.1s;
+        }
+        .btn:active {
+            transform: scale(0.98);
+        }
+        .btn-radio { background-color: #007bff; }
+        .btn-relax { background-color: #28a745; }
+        .btn-speech { background-color: #6f42c1; }
+        .info-box {
+            margin-top: 20px;
+            padding: 15px;
+            background: #fff;
+            border-radius: 10px;
+            font-size: 18px;
+            color: #444;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+
+    <h1>☀️ Kącik dla Mamy</h1>
+
+    <div class="grid">
+        <button class="btn btn-radio" onclick="toggleRadio()">📻 Stare Przeboje (Radio)</button>
+        <button class="btn btn-relax" onclick="toggleRain()">🌧️ Szum Deszczu (Relaks)</button>
+        <button class="btn btn-speech" onclick="speakMessage()">🔊 Słowo na Dziś (Lektor)</button>
+    </div>
+
+    <div class="info-box" id="status">
+        Kliknij dowolny przycisk powyżej!
+    </div>
+
+    <!-- Odtwarzacze Audio -->
+    <audio id="radioPlayer" src="https://stream.rcs.revma.com/yp244p9388uvw"></audio>
+    <audio id="rainPlayer" loop src="https://www.soundjay.com/nature/rain-01.mp3"></audio>
+
+    <script>
+        const radio = document.getElementById('radioPlayer');
+        const rain = document.getElementById('rainPlayer');
+        const status = document.getElementById('status');
+
+        function toggleRadio() {
+            rain.pause();
+            if (radio.paused) {
+                radio.play();
+                status.innerHTML = "▶️ Gra muzyka z dawnych lat...";
+            } else {
+                radio.pause();
+                status.innerHTML = "⏹️ Radio wyłączone.";
+            }
+        }
+
+        function toggleRain() {
+            radio.pause();
+            if (rain.paused) {
+                rain.play();
+                status.innerHTML = "🌧️ Odtwarzam uspokajający szum deszczu...";
+            } else {
+                rain.pause();
+                status.innerHTML = "⏹️ Relaks wyłączony.";
+            }
+        }
+
+        function speakMessage() {
+            window.speechSynthesis.cancel();
+            const text = "Dzień dobry! Życzę Ci spokojnego, pięknego dnia. Odpocznij sobie i posłuchaj dobrej muzyki!";
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'pl-PL';
+            utterance.rate = 0.9;
+            window.speechSynthesis.speak(utterance);
+            status.innerHTML = "🔊 Lektor czyta wiadomość...";
+        }
+    </script>
+
+</body>
+</html>
